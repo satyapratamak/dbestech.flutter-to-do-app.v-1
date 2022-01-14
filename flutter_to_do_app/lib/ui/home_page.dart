@@ -47,8 +47,9 @@ class _HomePageState extends State<HomePage> {
           notifyHelper.displayNotification(
             title: "Theme Changed",
             body:
-                Get.isDarkMode ? "Activated DarkTheme" : "Activated LightTheme",
+                Get.isDarkMode ? "Activated LightTheme" : "Activated DarkTheme",
           );
+          notifyHelper.scheduledNotification();
         },
         child: const Icon(
           Icons.nightlight_round,

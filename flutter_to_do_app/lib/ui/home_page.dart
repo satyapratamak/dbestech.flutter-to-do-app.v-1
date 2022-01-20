@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_to_do_app/services/notification_service.dart';
 import 'package:flutter_to_do_app/services/theme_service.dart';
+import 'package:flutter_to_do_app/ui/add_task_page.dart';
 import 'package:flutter_to_do_app/ui/theme.dart';
 import 'package:flutter_to_do_app/ui/widget/button.dart';
 import 'package:get/get.dart';
@@ -62,7 +63,8 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          MyButton(label: "+ Add Task", onTap: () => null),
+          MyButton(
+              label: "+ Add Task", onTap: () => Get.to(() => AddTaskPage())),
         ],
       ),
     );
@@ -122,7 +124,7 @@ class _HomePageState extends State<HomePage> {
         },
         child: Icon(
           Get.isDarkMode ? Icons.nightlight_round : Icons.wb_sunny_outlined,
-          size: 30,
+          size: 20,
           color: Get.isDarkMode ? Colors.white : Colors.black,
         ),
       ),

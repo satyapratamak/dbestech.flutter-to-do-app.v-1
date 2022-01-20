@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_to_do_app/services/notification_service.dart';
 import 'package:flutter_to_do_app/services/theme_service.dart';
+import 'package:flutter_to_do_app/ui/theme.dart';
+import 'package:flutter_to_do_app/ui/widget/button.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,13 +30,33 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: _appBar(),
       body: Column(
-        children: const [
-          Text(
-            "Theme Data",
-            style: TextStyle(
-              fontSize: 30,
+        children: [_addTaskBar()],
+      ),
+    );
+  }
+
+  _addTaskBar() {
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  DateFormat.yMMMMd().format(DateTime.now()),
+                  style: subHeadingStyle,
+                ),
+                Text(
+                  "Today",
+                  style: headingStyle,
+                ),
+              ],
             ),
           ),
+          MyButton(label: "+ Add Task", onTap: () => null),
         ],
       ),
     );
@@ -41,6 +64,8 @@ class _HomePageState extends State<HomePage> {
 
   _appBar() {
     return AppBar(
+      elevation: 0, // pembatas antara appbar dan main screen
+      backgroundColor: context.theme.backgroundColor,
       leading: GestureDetector(
         onTap: () {
           ThemeService().switchTheme();
@@ -51,15 +76,15 @@ class _HomePageState extends State<HomePage> {
           );
           notifyHelper.scheduledNotification();
         },
-        child: const Icon(
-          Icons.nightlight_round,
+        child: Icon(
+          Get.isDarkMode ? Icons.nightlight_round : Icons.wb_sunny_outlined,
           size: 20,
+          color: Get.isDarkMode ? Colors.white : Colors.black,
         ),
       ),
       actions: const [
-        Icon(
-          Icons.person,
-          size: 20,
+        CircleAvatar(
+          backgroundImage: AssetImage("images/profile.png"),
         ),
         SizedBox(
           width: 20,

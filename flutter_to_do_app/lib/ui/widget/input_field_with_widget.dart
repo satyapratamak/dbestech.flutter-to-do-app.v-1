@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_to_do_app/ui/theme.dart';
 
-class MyInputField extends StatelessWidget {
+class MyInputFieldWithWidget extends StatelessWidget {
   final String title;
   final String hint;
   final TextEditingController? controller;
+  final Widget widget;
 
-  const MyInputField({
+  const MyInputFieldWithWidget({
     Key? key,
     required this.title,
     required this.hint,
     this.controller,
+    required this.widget,
   }) : super(key: key);
 
   @override
@@ -40,6 +42,7 @@ class MyInputField extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextFormField(
+                    readOnly: true,
                     autofocus: false,
                     cursorColor:
                         Get.isDarkMode ? Colors.grey[100] : Colors.grey[700],
@@ -63,6 +66,7 @@ class MyInputField extends StatelessWidget {
                     ),
                   ),
                 ),
+                Container(child: widget),
               ],
             ),
           ),

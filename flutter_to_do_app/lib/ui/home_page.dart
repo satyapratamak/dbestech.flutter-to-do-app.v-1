@@ -1,3 +1,4 @@
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_to_do_app/services/notification_service.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_to_do_app/services/theme_service.dart';
 import 'package:flutter_to_do_app/ui/theme.dart';
 import 'package:flutter_to_do_app/ui/widget/button.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  DateTime _selectedDate = DateTime.now();
   var notifyHelper;
   @override
   void initState() {
@@ -30,7 +33,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: _appBar(),
       body: Column(
-        children: [_addTaskBar()],
+        children: [
+          _addTaskBar(),
+          _addDateBar(),
+        ],
       ),
     );
   }
@@ -62,6 +68,44 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  _addDateBar() {
+    return Container(
+      margin: const EdgeInsets.only(top: 20, left: 20),
+      child: DatePicker(
+        DateTime.now(),
+        height: 100,
+        width: 80,
+        initialSelectedDate: DateTime.now(),
+        selectionColor: primaryClr,
+        selectedTextColor: Colors.white,
+        dateTextStyle: GoogleFonts.lato(
+          textStyle: const TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey,
+          ),
+        ),
+        dayTextStyle: GoogleFonts.lato(
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey,
+          ),
+        ),
+        monthTextStyle: GoogleFonts.lato(
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey,
+          ),
+        ),
+        onDateChange: (date) {
+          _selectedDate = date;
+        },
+      ),
+    );
+  }
+
   _appBar() {
     return AppBar(
       elevation: 0, // pembatas antara appbar dan main screen
@@ -78,7 +122,7 @@ class _HomePageState extends State<HomePage> {
         },
         child: Icon(
           Get.isDarkMode ? Icons.nightlight_round : Icons.wb_sunny_outlined,
-          size: 20,
+          size: 30,
           color: Get.isDarkMode ? Colors.white : Colors.black,
         ),
       ),

@@ -14,6 +14,10 @@ class AddTaskPage extends StatefulWidget {
 
 class _AddTaskPageState extends State<AddTaskPage> {
   DateTime _selectedDate = DateTime.now();
+  String _endTime = DateFormat('hh:mm a')
+      .format(DateTime.now().add(const Duration(hours: 2)))
+      .toString();
+  String _startTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,9 +42,46 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   icon: const Icon(Icons.calendar_today_outlined),
                   onPressed: () {
                     debugPrint("Calendar Button pressed");
-                    _addDateFromUser();
+                    _getDateFromUser();
                   },
                 ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: MyInputFieldWithWidget(
+                      title: "Start Time",
+                      hint: _startTime,
+                      widget: IconButton(
+                        icon: const Icon(
+                          Icons.access_time_rounded,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          debugPrint("Star Time pressed");
+                          _getTimeFromUser(isStartTime: true);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: MyInputFieldWithWidget(
+                      title: "End Time",
+                      hint: _endTime,
+                      widget: IconButton(
+                        icon: const Icon(
+                          Icons.access_time_rounded,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          debugPrint("End Time pressed");
+                          _getTimeFromUser(isStartTime: false);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -74,7 +115,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
-  _addDateFromUser() async {
+  _getDateFromUser() async {
     DateTime? _pickerDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -85,9 +126,50 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (_pickerDate != null) {
       setState(() {
         _selectedDate = _pickerDate;
+        print(_selectedDate);
       });
     } else {
-      debugPrint("DataPicker is null..Something wrong was happened!");
+      debugPrint("It is null or something is wrong!");
     }
+  }
+
+  _getTimeFromUser({required bool isStartTime}) async {
+    var _pickedTime = await _showTimePicker(isStartTime: isStartTime);
+    //String _formatedTime = _pickedTime.format(context);
+    String _formatedTime = _pickedTime.format(context);
+
+    if (_pickedTime == null) {
+      debugPrint("Time canceled");
+    } else if (isStartTime) {
+      setState(() {
+        _startTime = _formatedTime;
+      });
+    } else if (!isStartTime) {
+      setState(() {
+        _endTime = _formatedTime;
+      });
+    }
+  }
+
+  _showTimePicker({required bool isStartTime}) {
+    return showTimePicker(
+      initialEntryMode: TimePickerEntryMode.input,
+      context: context,
+      initialTime: isStartTime
+          ? TimeOfDay(
+              hour: int.parse(_startTime.split(":")[0]),
+              minute: int.parse(_startTime.split(":")[1].split(" ")[0]),
+            )
+          : TimeOfDay(
+              hour: int.parse(_endTime.split(":")[0]),
+              minute: int.parse(_endTime.split(":")[1].split(" ")[0]),
+            ),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      },
+    );
   }
 }

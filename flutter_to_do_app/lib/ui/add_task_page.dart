@@ -17,7 +17,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
   String _endTime = DateFormat('hh:mm a')
       .format(DateTime.now().add(const Duration(hours: 2)))
       .toString();
+
   String _startTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
+  int _selectedRemind = 5;
+  List<int> remindList = [5, 10, 15, 20];
+  String _selectedRepeat = "None";
+  List<String> repeatList = [
+    "None",
+    "Daily",
+    "Weekly",
+    "Yearly",
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,6 +92,60 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     ),
                   ),
                 ],
+              ),
+              MyInputFieldWithWidget(
+                title: "Remind",
+                hint: "$_selectedRemind minutes early",
+                widget: DropdownButton(
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.grey,
+                    ),
+                    iconSize: 32,
+                    underline: Container(
+                      height: 0,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedRemind = int.parse(newValue!);
+                      });
+                    },
+                    elevation: 4,
+                    style: subTitleStyle,
+                    items:
+                        remindList.map<DropdownMenuItem<String>>((int value) {
+                      return DropdownMenuItem<String>(
+                        value: value.toString(),
+                        child: Text(value.toString()),
+                      );
+                    }).toList()),
+              ),
+              MyInputFieldWithWidget(
+                title: "Repeat",
+                hint: "$_selectedRepeat",
+                widget: DropdownButton(
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.grey,
+                    ),
+                    iconSize: 32,
+                    underline: Container(
+                      height: 0,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedRepeat = newValue!;
+                      });
+                    },
+                    elevation: 4,
+                    style: subTitleStyle,
+                    items: repeatList
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value.toString(),
+                        child: Text(value),
+                      );
+                    }).toList()),
               ),
             ],
           ),

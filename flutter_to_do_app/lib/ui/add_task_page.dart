@@ -28,6 +28,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     "Weekly",
     "Yearly",
   ];
+  int _selectedColor = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,6 +147,54 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         child: Text(value),
                       );
                     }).toList()),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Color", style: titleStyle),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Wrap(
+                        children: List<Widget>.generate(
+                          3,
+                          (int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedColor = index;
+                                  debugPrint("Index : $_selectedColor");
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: CircleAvatar(
+                                    child: _selectedColor == index
+                                        ? const Icon(
+                                            Icons.done,
+                                            color: Colors.white,
+                                            size: 16,
+                                          )
+                                        : Container(),
+                                    radius: 14,
+                                    backgroundColor: index == 0
+                                        ? primaryClr
+                                        : index == 1
+                                            ? pinkClr
+                                            : yellowClr),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
